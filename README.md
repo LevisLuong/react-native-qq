@@ -1,157 +1,157 @@
-# react-native-qq [![npm version](https://badge.fury.io/js/react-native-qq.svg)](http://badge.fury.io/js/react-native-qq)
+# react-native-qq [![npm version](https://badge.fury.io/js/react-native-qq.svg)](http://badge.fury.io/js/react-native -qq)
 
-React Native的QQ登录插件, react-native版本需要0.40.0及以上
+React Native's QQ login plugin, react-native version requires 0.40.0 and above
 
-## 如何安装
+## how to install
 
-### 首先安装npm包
-
-```bash
-yarn add react-native-qq
-```
-或
+### First install the npm package
 
 ```bash
-npm install react-native-qq --save
+Yarn add react-native-qq
 ```
-
-然后执行
+or
 
 ```bash
-react-native link react-native-qq
+Npm install react-native-qq --save
 ```
 
-### 安装iOS工程
+Then execute
 
-在工程target的`Build Phases->Link Binary with Libraries`中加入`libRCTQQAPI.a、libiconv.tbd、libsqlite3.tbd、libz.tbd、libc++.tbd`
+```bash
+React-native link react-native-qq
+```
 
-在 `Build Settings->Search Paths->Framework Search Paths`（如果你找不到Framework Search Paths，请注意选择Build Settings下方的All，而不是Basic） 中加入路径 `$(SRCROOT)/../node_modules/react-native-qq/ios/RCTQQAPI`
+### Installing iOS Project
 
-在 `Build Settings->Link->Other Linker Flags` 中加入 `-framework "TencentOpenAPI"`
+Add `libRCTQQAPI.a, libiconv.tbd, libsqlite3.tbd, libz.tbd, libc++.tbd to the `Build Phases->Link Binary with Libraries` of the project target.
 
-在 `Apple LLVM X.X - Custom Compiler Flags->Link->Other C Flags`中加入 `-isystem "$(SRCROOT)/../node_modules/react-native-qq/ios/RCTQQAPI"`
+In `Build Settings->Search Paths->Framework Search Paths` (if you can't find Framework Search Paths, please select All in the Build Settings, instead of Basic) and add the path `$(SRCROOT)/../node_modules /react-native-qq/ios/RCTQQAPI`
 
-在工程plist文件中加入qq白名单：(ios9以上必须)
-请以文本方式打开Info.plist，在其中添加
+Add `-framework "TencentOpenAPI" to `Build Settings->Link->Other Linker Flags`.
+
+Add `-isystem "$(SRCROOT)/../node_modules/react-native-qq/ios/RCTQQAPI" to `Apple LLVM X.X - Custom Compiler Flags->Link->Other C Flags`
+
+Add qq whitelist to the project plist file: (required for ios9 or above)
+Please open Info.plist as text and add it
 ```xml
 <key>LSApplicationQueriesSchemes</key>
 <array>
-    <!-- QQ、Qzone URL Scheme 白名单-->
-    <string>mqqapi</string>
-    <string>mqq</string>
-    <string>mqqOpensdkSSoLogin</string>
-    <string>mqqconnect</string>
-    <string>mqqopensdkdataline</string>
-    <string>mqqopensdkgrouptribeshare</string>
-    <string>mqqopensdkfriend</string>
-    <string>mqqopensdkapi</string>
-    <string>mqqopensdkapiV2</string>
-    <string>mqqopensdkapiV3</string>
-    <string>mqzoneopensdk</string>
-    <string>wtloginmqq</string>
-    <string>wtloginmqq2</string>
-    <string>mqqwpa</string>
-    <string>mqzone</string>
-    <string>mqzonev2</string>
-    <string>mqzoneshare</string>
-    <string>wtloginqzone</string>
-    <string>mqzonewx</string>
-    <string>mqzoneopensdkapiV2</string>
-    <string>mqzoneopensdkapi19</string>
-    <string>mqzoneopensdkapi</string>
-    <string>mqzoneopensdk</string>
- </array>
+    <!-- QQ, Qzone URL Scheme Whitelist -->
+    <string>mqqapi</string>
+    <string>mqq</string>
+    <string>mqqOpensdkSSoLogin</string>
+    <string>mqqconnect</string>
+    <string>mqqopensdkdataline</string>
+    <string>mqqopensdkgrouptribeshare</string>
+    <string>mqqopensdkfriend</string>
+    <string>mqqopensdkapi</string>
+    <string>mqqopensdkapiV2</string>
+    <string>mqqopensdkapiV3</string>
+    <string>mqzoneopensdk</string>
+    <string>wtloginmqq</string>
+    <string>wtloginmqq2</string>
+    <string>mqqwpa</string>
+    <string>mqzone</string>
+    <string>mqzonev2</string>
+    <string>mqzoneshare</string>
+    <string>wtloginqzone</string>
+    <string>mqzonewx</string>
+    <string>mqzoneopensdkapiV2</string>
+    <string>mqzoneopensdkapi19</string>
+    <string>mqzoneopensdkapi</string>
+    <string>mqzoneopensdk</string>
+ </array>
 ```
 
-在`Info->URL Types` 中增加QQ的scheme： `Identifier` 设置为`qq`, `URL Schemes` 设置为你注册的QQ开发者账号中的APPID，需要加前缀`tencent`，例如`tencent1104903684`
+Add the QQ scheme in `Info->URL Types`: `Identifier` is set to `qq`, `URL Schemes` is set to the APPID of your registered QQ developer account, prefixed with `tencent`, for example `tencent1104903684 `
 
-在你工程的`AppDelegate.m`文件中添加如下代码：
+Add the following code to your project's `AppDelegate.m` file:
 
 ```
 #import <React/RCTLinkingManager.h>
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-  return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+  Return [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
 }
 
 ```
 
-### 安装Android工程
+### Installing Android Project
 
-在`android/app/build.gradle`里，defaultConfig栏目下添加如下代码：
+In `android/app/build.gradle`, add the following code under the defaultConfig column:
 
 ```
 manifestPlaceholders = [
-    QQ_APPID: "<平台申请的APPID>"
+    QQ_APPID: "<APPID of Platform Application"
 ]
 ```
 
-以后如果需要修改APPID，只需要修改此一处。
+If you need to modify the APPID later, you only need to modify this one.
 
-另外，确保你的MainActivity.java中有`onActivityResult`的实现：
+Also, make sure you have the implementation of `onActivityResult` in MainActivity.java:
 
 ```java
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        super.onActivityResult(requestCode, resultCode, data);
-        mReactInstanceManager.onActivityResult(requestCode, resultCode, data);
-    }
+    @Override
+    Public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
+        mReactInstanceManager.onActivityResult(requestCode, resultCode, data);
+    }
 ```
 
-## 如何使用
+## how to use
 
-### 引入包
+### Introducing the package
 
 ```
-import * as QQAPI from 'react-native-qq';
+Import * as QQAPI from 'react-native-qq';
 ```
 
 ### API
 
 #### QQAPI.login([scopes])
 
-- scopes: 登录所申请的权限，默认为get_simple_userinfo。 需要多个权限时，以逗号分隔。
+- scopes: Login permission to apply, the default is get_simple_userinfo. When multiple permissions are required, they are separated by commas.
 
-调用QQ登录，可能会跳转到QQ应用或者打开一个网页浏览器以供用户登录。在本次login返回前，所有接下来的login调用都会直接失败。
+Calling QQ login may jump to the QQ application or open a web browser for the user to log in. All subsequent login calls will fail directly before this login returns.
 
-返回一个`Promise`对象。成功时的回调为一个类似这样的对象：
+Returns a `Promise` object. The callback on success is an object like this:
 
 ```javascript
 {
-	"access_token": "CAF0085A2AB8FDE7903C97F4792ECBC3",
-	"openid": "0E00BA738F6BB55731A5BBC59746E88D"
-	"expires_in": "1458208143094.6"	
-	"oauth_consumer_key": "12345"
+"access_token": "CAF0085A2AB8FDE7903C97F4792ECBC3",
+"openid": "0E00BA738F6BB55731A5BBC59746E88D"
+"expires_in": "1458208143094.6"
+"oauth_consumer_key": "12345"
 }
 ```
 
 #### QQAPI.shareToQQ(data)
 
-分享到QQ好友，参数同QQAPI.shareToQzone，返回一个`Promise`对象
+Share to QQ friends, parameters with QQAPI.shareToQzone, return a `Promise` object
 
 #### QQAPI.shareToQzone(data)
 
-分享到QZone，参数为一个object，可以有如下的形式：
+Share to QZone, the parameter is an object, which can have the following form:
 
 ```javascript
-// 分享图文消息
-{	
-	type: 'news',
-	title: 分享标题,
-	description: 描述,
-	webpageUrl: 网页地址,
-	imageUrl: 远程图片地址,
+// Share graphic messages
+{
+Type: 'news',
+Title: share the title,
+Description: description,
+webpageUrl: web address,
+imageUrl: remote image address,
 }
 
-// 其余格式尚未实现。
+// The rest of the format has not been implemented.
 ```
 
-## 常见问题
+## common problem
 
-#### Android: 调用QQAPI.login()没有反应
+#### Android: Calling QQAPI.login() does not respond
 
-通常出现这个原因是因为Manifest没有配置好，检查Manifest中有关Activity的配置。
+This reason usually occurs because Manifest is not configured, check the configuration of the Activity in Manifest.
 
-#### Android: 已经成功激活QQ登录，但回调没有被执行
+#### Android: The QQ login has been successfully activated, but the callback has not been executed.
 
-通常出现这个原因是因为MainActivity.java中缺少onActivityResult的调用。
+This reason usually occurs because the call to onActivityResult is missing from MainActivity.java.
